@@ -19,9 +19,12 @@
 Modern full-stack file manager with upload, download, preview and delete
 functionality.
 
-Designed with: - Clean backend architecture - Typed configuration -
-RESTful API - Docker-based deployment - Production-ready structure
-
+Designed with:
+- clean backend architecture
+- typed configuration
+- RESTful API
+- Docker-based deployment
+- production-ready structure
 ------------------------------------------------------------------------
 
 # 🏗 Architecture
