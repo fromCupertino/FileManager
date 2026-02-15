@@ -10,6 +10,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY config.py main.py ./
+COPY app/ ./app/
 
 # Директория для файлов (volume в docker-compose)
 ENV UPLOAD_DIR=/app/uploads
