@@ -39,3 +39,18 @@ def save_upload(upload_dir: Path, filename: str, source) -> Path:
     with path.open("xb") as buffer:
         shutil.copyfileobj(source, buffer)
     return path
+
+
+def delete_files(upload_dir: Path, names: list[str]) -> list[str]:
+    """
+    Удаляет файлы по именам. Имена нормализуются (без path traversal).
+    Возвращает список имён файлов, которые были удалены (существовали и удалены).
+    Несуществующие имена пропускаются.
+    """
+    deleted = []
+    for raw_name in names:
+        path = get_file_path(upload_dir, raw_name)
+        if path.is_file():
+            path.unlink()
+            deleted.append(path.name)
+    return deleted

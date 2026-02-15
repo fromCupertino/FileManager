@@ -7,7 +7,7 @@ from fastapi import APIRouter, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
 
 from config import UPLOAD_DIR
-from app.services.storage import get_file_path, list_files, save_upload
+from app.services.storage import delete_files, get_file_path, list_files, save_upload
 
 router = APIRouter(prefix="", tags=["files"])
 
@@ -74,3 +74,13 @@ async def upload_file(file: UploadFile = File(...)):
             status_code=409,
             detail=f"File '{safe_name}' already exists",
         )
+
+
+@router.delete("/files")
+def delete_files_endpoint(names: str = Query(..., description="Имена файлов через запятую")):
+    """Удалить файлы по именам (одно или несколько через запятую)."""
+    name_list = [n.strip() for n in names.split(",") if n.strip()]
+    if not name_list:
+        raise HTTPException(status_code=400, detail="At least one filename required")
+    deleted = delete_files(UPLOAD_DIR, name_list)
+    return {"deleted": deleted}
