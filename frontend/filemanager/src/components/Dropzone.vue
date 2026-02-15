@@ -6,16 +6,17 @@
     @dragleave="isDragging = false"
     @drop.prevent="handleDrop"
   >
-    <p class="dropzone__text">Drag & Drop file here or click to select</p>
+    <p class="dropzone__text">Drag & Drop files here or click to select</p>
     <input
       ref="inputRef"
       type="file"
       class="dropzone__input"
-      aria-label="Choose file"
+      multiple
+      aria-label="Choose files"
       @change="handleSelect"
     />
     <button type="button" class="dropzone__button" @click="openPicker">
-      Choose File
+      Choose Files
     </button>
   </div>
 </template>
@@ -33,14 +34,14 @@ function openPicker() {
 }
 
 function handleSelect(e) {
-  const file = e.target.files?.[0]
-  if (file) emit('select', file)
+  const fileList = e.target.files
+  if (fileList?.length) emit('select', Array.from(fileList))
   e.target.value = ''
 }
 
 function handleDrop(e) {
   isDragging.value = false
-  const file = e.dataTransfer?.files?.[0]
-  if (file) emit('select', file)
+  const fileList = e.dataTransfer?.files
+  if (fileList?.length) emit('select', Array.from(fileList))
 }
 </script>

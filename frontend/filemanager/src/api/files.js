@@ -17,13 +17,16 @@ export async function getFiles(params = {}) {
 }
 
 /**
- * @param {File} file
+ * @param {File | File[]} fileOrFiles
  * @param {(progress: number) => void} [onProgress]
- * @returns {Promise<{ filename: string, saved_to: string }>}
+ * @returns {Promise<{ uploaded: Array<{ filename: string, saved_to: string }>, errors: Array<{ filename: string, detail: string }> }>}
  */
-export async function uploadFile(file, onProgress) {
+export async function uploadFiles(fileOrFiles, onProgress) {
+  const files = Array.isArray(fileOrFiles) ? fileOrFiles : [fileOrFiles]
   const formData = new FormData()
-  formData.append('file', file)
+  for (const file of files) {
+    formData.append('files', file)
+  }
   const { data } = await api.post('/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     onUploadProgress: onProgress

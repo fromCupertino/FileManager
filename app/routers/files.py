@@ -61,19 +61,21 @@ def download_file(
 
 
 @router.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
-    """Загрузить файл. 409 если файл с таким именем уже есть."""
-    safe_name = Path(file.filename).name
-    if not safe_name:
-        raise HTTPException(status_code=400, detail="Filename required")
-    try:
-        path = save_upload(UPLOAD_DIR, safe_name, file.file)
-        return {"filename": safe_name, "saved_to": str(path)}
-    except FileExistsError:
-        raise HTTPException(
-            status_code=409,
-            detail=f"File '{safe_name}' already exists",
-        )
+async def upload_files(files: list[UploadFile] = File(..., description="Один или несколько файлов")):
+    """Загрузить один или несколько файлов. Конфликты по имени возвращаются в errors."""
+    uploaded = []
+    errors = []
+    for file in files:
+        safe_name = Path(file.filename).name
+        if not safe_name:
+            errors.append({"filename": file.filename or "", "detail": "Filename required"})
+            continue
+        try:
+            path = save_upload(UPLOAD_DIR, safe_name, file.file)
+            uploaded.append({"filename": safe_name, "saved_to": str(path)})
+        except FileExistsError:
+            errors.append({"filename": safe_name, "detail": "File already exists"})
+    return {"uploaded": uploaded, "errors": errors}
 
 
 @router.delete("/files")

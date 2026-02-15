@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { uploadFile as apiUploadFile } from '@/api/files.js'
+import { uploadFiles as apiUploadFiles } from '@/api/files.js'
 
 /**
  * @param {() => Promise<void>} [onSuccess] — например refetch списка файлов
@@ -8,20 +8,27 @@ export function useFileUpload(onSuccess) {
   const uploadProgress = ref(0)
   const uploadError = ref(/** @type {string | null} */ (null))
 
-  async function upload(file) {
-    if (!file) return
+  /**
+   * @param {File | File[]} fileOrFiles
+   */
+  async function upload(fileOrFiles) {
+    const files = Array.isArray(fileOrFiles) ? fileOrFiles : [fileOrFiles]
+    if (!files.length) return
     uploadProgress.value = 0
     uploadError.value = null
     try {
-      await apiUploadFile(file, (percent) => {
+      const result = await apiUploadFiles(files, (percent) => {
         uploadProgress.value = percent
       })
       uploadProgress.value = 0
-      await onSuccess?.()
+      if (result.errors?.length) {
+        const first = result.errors[0]
+        uploadError.value = first.detail === 'File already exists' ? 'Some files already exist' : first.detail
+      }
+      if (result.uploaded?.length) await onSuccess?.()
     } catch (err) {
       uploadProgress.value = 0
-      const status = err.response?.status
-      uploadError.value = status === 409 ? 'File already exists' : 'Upload failed'
+      uploadError.value = err.response?.status === 409 ? 'File already exists' : 'Upload failed'
     }
   }
 

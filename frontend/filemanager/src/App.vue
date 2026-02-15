@@ -55,9 +55,9 @@ function updateSortBy(v) {
   sortBy.value = v
 }
 
-function handleFileSelect(file) {
+function handleFileSelect(files) {
   clearError()
-  upload(file)
+  upload(files)
 }
 
 function openDownload(filename) {
