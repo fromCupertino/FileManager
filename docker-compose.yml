@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - UPLOAD_DIR=/app/uploads
+      - CORS_ORIGINS=http://localhost,http://localhost:80,http://127.0.0.1:80
+      - HOST=0.0.0.0
+      - PORT=8000
+    volumes:
+      - uploads_data:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend/filemanager
+      dockerfile: Dockerfile
+      args:
+        # URL бэкенда с точки зрения браузера (при доступе с хоста)
+        VITE_API_BASE: ${VITE_API_BASE:-http://localhost:8000}
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  uploads_data:

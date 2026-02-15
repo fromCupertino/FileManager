@@ -1,0 +1,10 @@
+favenv
+__pycache__
+*.pyc
+.git
+.gitignore
+.env
+*.md
+frontend/filemanager/node_modules
+frontend/filemanager/dist
+*.log
