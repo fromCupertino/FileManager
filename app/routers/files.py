@@ -18,12 +18,41 @@ def get_files(limit: int | None = Query(None, ge=1)):
     return list_files(UPLOAD_DIR, limit=limit)
 
 
+def _media_type_for_preview(filename: str) -> str:
+    ext = Path(filename).suffix.lower()
+    if ext == ".pdf":
+        return "application/pdf"
+    if ext in (".jpg", ".jpeg"):
+        return "image/jpeg"
+    if ext == ".png":
+        return "image/png"
+    if ext == ".gif":
+        return "image/gif"
+    if ext == ".webp":
+        return "image/webp"
+    if ext == ".svg":
+        return "image/svg+xml"
+    if ext == ".bmp":
+        return "image/bmp"
+    return "application/octet-stream"
+
+
 @router.get("/download/{filename}")
-def download_file(filename: str):
-    """Скачать файл по имени."""
+def download_file(
+    filename: str,
+    preview: bool = Query(False, description="Отдать файл для отображения в браузере (inline)"),
+):
+    """Скачать файл по имени. ?preview=1 — отображение в iframe/img без скачивания."""
     file_path = get_file_path(UPLOAD_DIR, filename)
     if not file_path.exists():
         raise HTTPException(status_code=404, detail="File not found")
+    if preview:
+        return FileResponse(
+            path=file_path,
+            filename=file_path.name,
+            media_type=_media_type_for_preview(filename),
+            content_disposition_type="inline",
+        )
     return FileResponse(
         path=file_path,
         filename=file_path.name,

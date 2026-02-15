@@ -30,21 +30,60 @@
   margin: 0 0 5px;
 }
 
+.file-card__name--clickable {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.file-card__name--clickable:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
 .file-card__meta {
   font-size: 12px;
   margin: 2px 0;
 }
 
+.file-card__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.file-card__copy-link,
 .file-card__download {
   cursor: pointer;
   border: none;
   border-radius: var(--radius-md);
   padding: 8px 12px;
-  background: var(--gradient-button);
   color: var(--color-text);
   font-weight: 500;
   transition: var(--transition);
   font-family: var(--font-family);
+}
+
+.file-card__copy-link {
+  background: var(--color-input-bg);
+}
+
+.file-card__copy-link:hover {
+  background: var(--color-active);
+}
+
+.file-card__download {
+  background: var(--gradient-button);
+  flex: 1;
+  min-width: 0;
 }
 
 .file-card__download:hover {

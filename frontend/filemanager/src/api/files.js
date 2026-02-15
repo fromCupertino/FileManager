@@ -42,3 +42,12 @@ export function getDownloadUrl(filename) {
   const base = baseURL.replace(/\/$/, '')
   return `${base}/download/${encodeURIComponent(filename)}`
 }
+
+/**
+ * URL для отображения в превью (iframe/img) — без триггера скачивания
+ * @param {string} filename
+ * @returns {string}
+ */
+export function getPreviewUrl(filename) {
+  return getDownloadUrl(filename) + '?preview=1'
+}

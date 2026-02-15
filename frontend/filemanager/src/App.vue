@@ -15,26 +15,41 @@
         @toggle-order="toggleOrder"
       />
 
-      <FileList :files="filteredFiles" @download="openDownload" />
+      <FileList
+        :files="filteredFiles"
+        :get-file-url="getPreviewUrl"
+        @download="openDownload"
+        @preview="openPreview"
+      />
     </div>
+
+    <PreviewSidebar
+      :is-open="!!previewFile"
+      :file="previewFile"
+      :get-preview-url="getPreviewUrl"
+      @close="previewFile = null"
+    />
   </div>
 </template>
 
 <script setup>
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import Dropzone from '@/components/Dropzone.vue'
 import UploadProgress from '@/components/UploadProgress.vue'
 import SortControls from '@/components/SortControls.vue'
 import FileList from '@/components/FileList.vue'
+import PreviewSidebar from '@/components/PreviewSidebar.vue'
 import { useFiles } from '@/composables/useFiles.js'
 import { useFileUpload } from '@/composables/useFileUpload.js'
 import { useFileSort } from '@/composables/useFileSort.js'
-import { getDownloadUrl } from '@/api/files.js'
+import { getDownloadUrl, getPreviewUrl } from '@/api/files.js'
 
 const { files, fetchFiles } = useFiles()
 const { search, sortBy, sortOrder, filteredFiles, toggleOrder } = useFileSort(files)
 const { uploadProgress, uploadError, upload, clearError } = useFileUpload(fetchFiles)
+
+const previewFile = ref(null)
 
 function updateSortBy(v) {
   sortBy.value = v
@@ -47,6 +62,10 @@ function handleFileSelect(file) {
 
 function openDownload(filename) {
   window.open(getDownloadUrl(filename), '_blank')
+}
+
+function openPreview(file) {
+  previewFile.value = file
 }
 
 watch(uploadError, (err) => {
