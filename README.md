@@ -132,13 +132,14 @@ npm run dev
 
 # 🔐 Environment Variables
 
-  Variable        Description        Default
-  --------------- ------------------ -----------------------
-  UPLOAD_DIR      Upload directory   ./src
-  CORS_ORIGINS    Allowed origins    http://localhost:5173
-  HOST            API host           0.0.0.0
-  PORT            API port           8000
-  VITE_API_BASE   API base URL       http://localhost:8000
+| Variable      | Description      | Default                                        |
+| ------------- | ---------------- | ---------------------------------------------- |
+| UPLOAD_DIR    | Upload directory | ./src                                          |
+| CORS_ORIGINS  | Allowed origins  | [http://localhost:5173](http://localhost:5173) |
+| HOST          | API host         | 0.0.0.0                                        |
+| PORT          | API port         | 8000                                           |
+| VITE_API_BASE | API base URL     | [http://localhost:8000](http://localhost:8000) |
+
 
 ------------------------------------------------------------------------
 
