@@ -1,120 +1,159 @@
-# File Manager (FastAPI + Vue)
+# 📁 File Manager
 
-Веб-приложение для загрузки и скачивания файлов: бэкенд на FastAPI, фронтенд на Vue 3 + Vite.
+### FastAPI + Vue 3 + Docker
 
-## Требования
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)]()
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.1.0-green.svg)]()
+[![Vue](https://img.shields.io/badge/Vue-3.x-42b883.svg)]()
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)]()
 
-- **Локальный запуск:** Python 3.12+, Node.js 20+
-- **Docker:** Docker и Docker Compose
+------------------------------------------------------------------------
 
----
+🇷🇺 [Русская версия](#-русская-версия) • 🇬🇧 [English Version](Overview)
 
-## Запуск через Docker (рекомендуется)
+------------------------------------------------------------------------
 
-1. Клонируйте репозиторий и перейдите в каталог проекта.
+# 🚀 Overview
 
-2. Запустите сервисы:
-   ```bash
-   docker compose up --build
-   ```
+Modern full-stack file manager with upload, download, preview and delete
+functionality.
 
-3. Откройте в браузере:
-   - **Фронтенд:** http://localhost
-   - **API:** http://localhost:8000  
-   Документация API: http://localhost:8000/docs
+Designed with: - Clean backend architecture - Typed configuration -
+RESTful API - Docker-based deployment - Production-ready structure
 
-Файлы сохраняются в Docker volume `uploads_data` и не теряются при перезапуске контейнеров.
+------------------------------------------------------------------------
 
-Остановка:
-```bash
+# 🏗 Architecture
+
+## Backend
+
+-   FastAPI
+-   OpenAPI 3.1 schema
+-   Environment-based configuration
+-   Configurable file storage directory
+
+## Frontend
+
+-   Vue 3 (Composition API)
+-   Vite
+-   Axios API integration
+-   Responsive UI
+
+## Infrastructure
+
+-   Docker multi-container setup
+-   Nginx frontend serving
+-   Persistent volume storage
+
+------------------------------------------------------------------------
+
+# 📡 API
+
+## GET `/files`
+
+Returns list of stored files.
+
+Query: - `limit` (optional, integer ≥ 1)
+
+------------------------------------------------------------------------
+
+## DELETE `/files`
+
+Deletes one or multiple files.
+
+Query: - `names` (required, comma-separated string)
+
+------------------------------------------------------------------------
+
+## GET `/download/{filename}`
+
+Downloads file by name.
+
+Query: - `preview=true` → inline response (iframe/img compatible)
+
+------------------------------------------------------------------------
+
+## POST `/upload`
+
+Uploads one or multiple files.
+
+Content-Type:
+
+    multipart/form-data
+
+Form field:
+
+    files[]
+
+------------------------------------------------------------------------
+
+# 🐳 Run with Docker (Recommended)
+
+``` bash
+docker compose up --build
+```
+
+Available at: - Frontend → http://localhost\
+- API → http://localhost:8000\
+- Swagger Docs → http://localhost:8000/docs
+
+Persistent storage: Docker volume `uploads_data`
+
+Stop:
+
+``` bash
 docker compose down
 ```
 
----
+------------------------------------------------------------------------
 
-## Локальный запуск (без Docker)
+# 💻 Local Development
 
-### 1. Бэкенд
+## Backend
 
-```bash
-# Виртуальное окружение (по желанию)
+``` bash
 python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-
-# Зависимости
+source venv/bin/activate
 pip install -r requirements.txt
-
-# Опционально: скопировать и отредактировать переменные
 cp .env.example .env
-
-# Запуск
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn main:app --reload
 ```
 
-API будет доступен на http://localhost:8000
+## Frontend
 
-### 2. Фронтенд
-
-В **другом** терминале:
-
-```bash
+``` bash
 cd frontend/filemanager
-
 npm install
 npm run dev
 ```
 
-Фронтенд откроется на http://localhost:5173 и по умолчанию будет обращаться к API на http://localhost:8000.
+------------------------------------------------------------------------
 
----
+# 🔐 Environment Variables
 
-## Переменные окружения
+  Variable        Description        Default
+  --------------- ------------------ -----------------------
+  UPLOAD_DIR      Upload directory   ./src
+  CORS_ORIGINS    Allowed origins    http://localhost:5173
+  HOST            API host           0.0.0.0
+  PORT            API port           8000
+  VITE_API_BASE   API base URL       http://localhost:8000
 
-| Переменная | Описание | По умолчанию |
-|------------|----------|--------------|
-| `UPLOAD_DIR` | Папка для загружаемых файлов | `./src` |
-| `CORS_ORIGINS` | Разрешённые origins через запятую | `http://localhost:5173` |
-| `HOST` | Хост сервера | `0.0.0.0` |
-| `PORT` | Порт сервера | `8000` |
-| `VITE_API_BASE` | URL API для фронтенда (при сборке) | `http://localhost:8000` |
+------------------------------------------------------------------------
 
-Для локальной разработки бэкенда можно создать файл `.env` в корне проекта (по образцу `.env.example`).  
-Для Docker переменные задаются в `docker-compose.yml` или в файле `.env` рядом с `docker-compose.yml` (например, `VITE_API_BASE` для сборки фронта).
+# 🌍 Русская версия
 
----
+## Описание
 
-## Структура проекта
+Full-stack приложение для управления файлами: - загрузка - скачивание -
+предпросмотр - удаление
 
-```
-.
-├── main.py              # FastAPI-приложение
-├── config.py            # Конфигурация из env
-├── requirements.txt
-├── Dockerfile           # Образ бэкенда
-├── docker-compose.yml   # Backend + Frontend
-├── .env.example
-└── frontend/filemanager # Vue 3 + Vite
-    ├── src/
-    ├── Dockerfile       # Сборка + nginx
-    └── nginx.conf
-```
+Проект демонстрирует: - грамотную архитектуру backend - конфигурацию
+через env - контейнеризацию - структурированный REST API
 
----
+------------------------------------------------------------------------
 
-## Деплой
+# 📄 License
 
-1. Настройте `.env` (или переменные в окружении):
-   - `CORS_ORIGINS` — ваш домен фронтенда (например, `https://app.example.com`).
-   - `VITE_API_BASE` — публичный URL API (например, `https://api.example.com`).
-
-2. Пересоберите фронтенд с нужным `VITE_API_BASE`:
-   ```bash
-   VITE_API_BASE=https://api.example.com docker compose build frontend
-   ```
-
-3. Запустите:
-   ```bash
-   docker compose up -d
-   ```
-
-При использовании обратного прокси (nginx/traefik) убедитесь, что в `CORS_ORIGINS` указан реальный origin, с которого открывается фронтенд.
+MIT
