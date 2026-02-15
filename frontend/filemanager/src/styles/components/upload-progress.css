@@ -1,0 +1,13 @@
+.upload-progress {
+  height: 8px;
+  background: var(--color-progress-bg);
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.upload-progress__bar {
+  height: 100%;
+  background: var(--gradient-progress);
+  transition: width var(--transition) ease;
+}

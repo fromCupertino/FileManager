@@ -1,0 +1,53 @@
+.file-card {
+  background: var(--color-overlay-light);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--transition), box-shadow var(--transition);
+  font-family: var(--font-family);
+}
+
+.file-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.file-card__icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.file-card__info {
+  margin-bottom: 12px;
+}
+
+.file-card__name {
+  font-size: 16px;
+  word-break: break-all;
+  margin: 0 0 5px;
+}
+
+.file-card__meta {
+  font-size: 12px;
+  margin: 2px 0;
+}
+
+.file-card__download {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  background: var(--gradient-button);
+  color: var(--color-text);
+  font-weight: 500;
+  transition: var(--transition);
+  font-family: var(--font-family);
+}
+
+.file-card__download:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+}

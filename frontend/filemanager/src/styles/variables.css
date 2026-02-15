@@ -1,0 +1,33 @@
+:root {
+  /* Цвета */
+  --color-primary: #ff6600;
+  --color-primary-dark: #cc5500;
+  --color-primary-darker: #993300;
+  --color-text: #fff;
+  --color-text-muted: #ffb87c;
+  --color-error: #ff9999;
+  --color-overlay: rgba(0, 0, 0, 0.35);
+  --color-overlay-light: rgba(0, 0, 0, 0.3);
+  --color-input-bg: rgba(255, 255, 255, 0.1);
+  --color-input-bg-subtle: rgba(255, 255, 255, 0.05);
+  --color-active: rgba(255, 102, 0, 0.1);
+  --color-progress-bg: rgba(255, 102, 0, 0.2);
+
+  /* Тени */
+  --shadow-card: 0 15px 40px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 15px 40px rgba(204, 85, 0, 0.3);
+  --shadow-button-hover: 0 6px 20px rgba(204, 85, 0, 0.5);
+  --shadow-input-focus: 0 0 8px rgba(255, 102, 0, 0.5);
+
+  /* Градиенты */
+  --gradient-bg: linear-gradient(270deg, var(--color-primary-darker), var(--color-primary-dark), var(--color-primary), var(--color-primary-darker));
+  --gradient-button: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  --gradient-progress: linear-gradient(90deg, var(--color-primary), var(--color-primary-darker));
+
+  /* Оформление */
+  --font-family: 'Inter', sans-serif;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition: 0.3s;
+}

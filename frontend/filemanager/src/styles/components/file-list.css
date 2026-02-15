@@ -1,0 +1,23 @@
+.file-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.file-list__empty {
+  text-align: center;
+  margin-top: 40px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.file-list .fade-enter-active,
+.file-list .fade-leave-active {
+  transition: var(--transition);
+}
+
+.file-list .fade-enter-from,
+.file-list .fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}

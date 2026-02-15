@@ -1,0 +1,44 @@
+import { api } from './client.js'
+
+/**
+ * @typedef {Object} FileItem
+ * @property {string} name
+ * @property {number} size
+ * @property {string} modified
+ */
+
+/**
+ * @param {{ limit?: number }} [params]
+ * @returns {Promise<FileItem[]>}
+ */
+export async function getFiles(params = {}) {
+  const { data } = await api.get('/files', { params })
+  return data
+}
+
+/**
+ * @param {File} file
+ * @param {(progress: number) => void} [onProgress]
+ * @returns {Promise<{ filename: string, saved_to: string }>}
+ */
+export async function uploadFile(file, onProgress) {
+  const formData = new FormData()
+  formData.append('file', file)
+  const { data } = await api.post('/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: onProgress
+      ? (e) => onProgress(e.total ? Math.round((e.loaded * 100) / e.total) : 0)
+      : undefined,
+  })
+  return data
+}
+
+/**
+ * @param {string} filename
+ * @returns {string} URL для скачивания
+ */
+export function getDownloadUrl(filename) {
+  const baseURL = api.defaults.baseURL ?? ''
+  const base = baseURL.replace(/\/$/, '')
+  return `${base}/download/${encodeURIComponent(filename)}`
+}

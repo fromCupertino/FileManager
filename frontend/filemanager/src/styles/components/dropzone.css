@@ -1,0 +1,44 @@
+.dropzone {
+  border: 2px dashed var(--color-primary);
+  padding: 40px;
+  text-align: center;
+  margin: 20px 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-input-bg-subtle);
+  backdrop-filter: blur(12px);
+  transition: var(--transition);
+  font-family: var(--font-family);
+}
+
+.dropzone--active {
+  background: var(--color-active);
+}
+
+.dropzone__text {
+  margin: 0 0 12px;
+}
+
+.dropzone__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropzone__button {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  background: var(--gradient-button);
+  color: var(--color-text);
+  font-weight: 500;
+  transition: var(--transition);
+  font-family: var(--font-family);
+}
+
+.dropzone__button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+}
