@@ -90,3 +90,23 @@
   transform: translateY(-2px);
   box-shadow: var(--shadow-button-hover);
 }
+
+.file-card__copy-hint {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 185, 0, 0.14);
+  border: 1px solid rgba(255, 185, 0, 0.45);
+}
+
+.file-card__copy-warning,
+.file-card__copy-url {
+  margin: 0;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.file-card__copy-url {
+  margin-top: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}

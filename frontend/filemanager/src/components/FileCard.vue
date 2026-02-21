@@ -31,6 +31,12 @@
         Download
       </button>
     </div>
+    <div v-if="showManualCopyHint" class="file-card__copy-hint" role="status">
+      <p class="file-card__copy-warning">
+        Автоматическое копирование недоступно при HTTP-соединении. Скопируйте ссылку вручную:
+      </p>
+      <p class="file-card__copy-url">{{ manualCopyUrl }}</p>
+    </div>
   </div>
 </template>
 
@@ -52,13 +58,26 @@ const isPreviewable = computed(() => checkPreviewable(props.file.name))
 const icon = computed(() => getFileIcon(props.file.name))
 
 const copied = ref(false)
+const showManualCopyHint = ref(false)
+const manualCopyUrl = ref('')
 let copyResetTimer = null
 
 async function copyLink() {
   const url = props.getFileUrl(props.file.name)
+  const isHttpConnection = window.location.protocol === 'http:'
+
+  if (isHttpConnection) {
+    copied.value = false
+    showManualCopyHint.value = true
+    manualCopyUrl.value = url
+    return
+  }
+
   try {
     await navigator.clipboard.writeText(url)
     copied.value = true
+    showManualCopyHint.value = false
+    manualCopyUrl.value = ''
     if (copyResetTimer) clearTimeout(copyResetTimer)
     copyResetTimer = setTimeout(() => { copied.value = false }, 2000)
   } catch {
