@@ -1,19 +1,24 @@
 <template>
-  <div class="file-card">
-    <div class="file-card__icon">{{ icon }}</div>
-    <div class="file-card__info">
-      <button
-        v-if="isPreviewable"
-        type="button"
-        class="file-card__name file-card__name--clickable"
-        @click="$emit('preview', file)"
-      >
-        {{ file.name }}
-      </button>
-      <h3 v-else class="file-card__name">{{ file.name }}</h3>
-      <p class="file-card__meta">{{ formatSize(file.size) }}</p>
-      <p class="file-card__meta">{{ formatDate(file.modified) }}</p>
+  <div class="file-card" :class="{ 'file-card--compact': compact }">
+    <div class="file-card__main">
+      <div class="file-card__icon">{{ icon }}</div>
+      <div class="file-card__info">
+        <button
+          v-if="isPreviewable"
+          type="button"
+          class="file-card__name file-card__name--clickable"
+          @click="$emit('preview', file)"
+        >
+          {{ file.name }}
+        </button>
+        <h3 v-else class="file-card__name">{{ file.name }}</h3>
+        <div class="file-card__meta-row">
+          <p class="file-card__meta">{{ formatSize(file.size) }}</p>
+          <p class="file-card__meta">{{ formatDate(file.modified) }}</p>
+        </div>
+      </div>
     </div>
+
     <div class="file-card__actions">
       <button
         type="button"
@@ -24,6 +29,14 @@
         {{ copied ? '✓' : 'Copy link' }}
       </button>
       <button
+        v-if="compact && isPreviewable"
+        type="button"
+        class="file-card__preview"
+        @click="$emit('preview', file)"
+      >
+        Preview
+      </button>
+      <button
         type="button"
         class="file-card__download"
         @click="$emit('download', file.name)"
@@ -31,6 +44,7 @@
         Download
       </button>
     </div>
+
     <div v-if="showManualCopyHint" class="file-card__copy-hint" role="status">
       <p class="file-card__copy-warning">
         Автоматическое копирование недоступно при HTTP-соединении. Скопируйте ссылку вручную:
@@ -50,6 +64,7 @@ const props = defineProps({
   file: { type: Object, required: true },
   /** Прямая ссылка на файл на сервере. (name: string) => string */
   getFileUrl: { type: Function, required: true },
+  compact: { type: Boolean, default: false },
 })
 
 defineEmits(['download', 'preview'])

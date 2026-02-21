@@ -15,6 +15,11 @@
   box-shadow: var(--shadow-card-hover);
 }
 
+.file-card__main {
+  display: flex;
+  flex-direction: column;
+}
+
 .file-card__icon {
   font-size: 32px;
   margin-bottom: 10px;
@@ -22,6 +27,7 @@
 
 .file-card__info {
   margin-bottom: 12px;
+  min-width: 0;
 }
 
 .file-card__name {
@@ -49,6 +55,12 @@
   text-decoration: underline;
 }
 
+.file-card__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+}
+
 .file-card__meta {
   font-size: 12px;
   margin: 2px 0;
@@ -61,7 +73,8 @@
 }
 
 .file-card__copy-link,
-.file-card__download {
+.file-card__download,
+.file-card__preview {
   cursor: pointer;
   border: none;
   border-radius: var(--radius-md);
@@ -72,11 +85,13 @@
   font-family: var(--font-family);
 }
 
-.file-card__copy-link {
+.file-card__copy-link,
+.file-card__preview {
   background: var(--color-input-bg);
 }
 
-.file-card__copy-link:hover {
+.file-card__copy-link:hover,
+.file-card__preview:hover {
   background: var(--color-active);
 }
 
@@ -89,6 +104,58 @@
 .file-card__download:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-button-hover);
+}
+
+.file-card--compact {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.file-card--compact:hover {
+  transform: translateY(-2px);
+}
+
+.file-card--compact .file-card__main {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.file-card--compact .file-card__icon {
+  margin-bottom: 0;
+  font-size: 26px;
+}
+
+.file-card--compact .file-card__info {
+  margin-bottom: 0;
+}
+
+.file-card--compact .file-card__name {
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-card--compact .file-card__actions {
+  margin-left: auto;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.file-card--compact .file-card__copy-link,
+.file-card--compact .file-card__download,
+.file-card--compact .file-card__preview {
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
+.file-card--compact .file-card__download {
+  flex: 0 0 auto;
 }
 
 .file-card__copy-hint {
@@ -109,4 +176,21 @@
 .file-card__copy-url {
   margin-top: 6px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+@media (max-width: 780px) {
+  .file-card--compact {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .file-card--compact .file-card__main {
+    width: 100%;
+  }
+
+  .file-card--compact .file-card__actions {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
 }

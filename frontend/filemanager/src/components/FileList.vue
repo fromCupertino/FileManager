@@ -1,14 +1,46 @@
 <template>
   <div class="file-list">
     <template v-if="files.length">
+      <div class="file-list__toolbar">
+        <span class="file-list__view-label">View:</span>
+        <div class="file-list__view-switch" role="tablist" aria-label="File view mode">
+          <button
+            type="button"
+            class="file-list__view-btn"
+            :class="{ 'is-active': viewMode === 'grid' }"
+            role="tab"
+            :aria-selected="viewMode === 'grid'"
+            @click="viewMode = 'grid'"
+          >
+            Grid
+          </button>
+          <button
+            type="button"
+            class="file-list__view-btn"
+            :class="{ 'is-active': viewMode === 'list' }"
+            role="tab"
+            :aria-selected="viewMode === 'list'"
+            @click="viewMode = 'list'"
+          >
+            List
+          </button>
+        </div>
+      </div>
+
       <transition name="page" mode="out-in">
-        <div :key="`page-${currentPage}`" class="file-list__page">
-          <transition-group name="fade" tag="div" class="file-list__grid">
+        <div :key="`page-${currentPage}-${viewMode}`" class="file-list__page">
+          <transition-group
+            name="fade"
+            tag="div"
+            class="file-list__grid"
+            :class="{ 'file-list__grid--list': viewMode === 'list' }"
+          >
             <FileCard
               v-for="file in paginatedFiles"
               :key="file.name"
               :file="file"
               :get-file-url="getFileUrl"
+              :compact="viewMode === 'list'"
               @download="$emit('download', $event)"
               @preview="$emit('preview', $event)"
             />
@@ -57,7 +89,8 @@
 import { computed, ref, watch } from 'vue'
 import FileCard from './FileCard.vue'
 
-const PAGE_SIZE = 9
+const PAGE_SIZE_GRID = 9
+const PAGE_SIZE_LIST = 14
 
 const props = defineProps({
   /** @type {import('vue').PropType<import('@/api/files.js').FileItem[]>} */
@@ -69,12 +102,14 @@ const props = defineProps({
 defineEmits(['download', 'preview'])
 
 const currentPage = ref(1)
+const viewMode = ref('grid')
+const pageSize = computed(() => (viewMode.value === 'list' ? PAGE_SIZE_LIST : PAGE_SIZE_GRID))
 
-const totalPages = computed(() => Math.max(1, Math.ceil(props.files.length / PAGE_SIZE)))
+const totalPages = computed(() => Math.max(1, Math.ceil(props.files.length / pageSize.value)))
 
 const paginatedFiles = computed(() => {
-  const start = (currentPage.value - 1) * PAGE_SIZE
-  return props.files.slice(start, start + PAGE_SIZE)
+  const start = (currentPage.value - 1) * pageSize.value
+  return props.files.slice(start, start + pageSize.value)
 })
 
 const isFirstPage = computed(() => currentPage.value === 1)
@@ -93,4 +128,8 @@ watch(
     }
   },
 )
+
+watch(viewMode, () => {
+  currentPage.value = 1
+})
 </script>
