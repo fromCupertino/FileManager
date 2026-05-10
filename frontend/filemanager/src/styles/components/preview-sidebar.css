@@ -2,9 +2,9 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 420px;
   max-width: 100%;
   height: 100vh;
+  box-sizing: border-box;
   background: var(--color-overlay);
   backdrop-filter: blur(12px);
   box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4);
@@ -16,8 +16,76 @@
   font-family: var(--font-family);
 }
 
+.preview-sidebar--resizing {
+  transition: none;
+}
+
 .preview-sidebar--open {
   transform: translateX(0);
+}
+
+.preview-sidebar__resize-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 100%;
+  cursor: ew-resize;
+  touch-action: none;
+  outline: none;
+  z-index: 20;
+}
+
+.preview-sidebar:not(.preview-sidebar--open) .preview-sidebar__resize-handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.preview-sidebar__resize-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.24);
+  transition:
+    background var(--transition),
+    box-shadow var(--transition);
+}
+
+.preview-sidebar__resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  width: 3px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    5px 0 0 rgba(255, 255, 255, 0.22),
+    10px 0 0 rgba(255, 255, 255, 0.14);
+  transform: translateY(-50%);
+  transition:
+    background var(--transition),
+    box-shadow var(--transition);
+}
+
+.preview-sidebar__resize-handle:hover::before,
+.preview-sidebar__resize-handle:focus-visible::before,
+.preview-sidebar--resizing .preview-sidebar__resize-handle::before {
+  background: var(--color-primary);
+  box-shadow: 0 0 12px rgba(255, 102, 0, 0.6);
+}
+
+.preview-sidebar__resize-handle:hover::after,
+.preview-sidebar__resize-handle:focus-visible::after,
+.preview-sidebar--resizing .preview-sidebar__resize-handle::after {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    5px 0 0 rgba(255, 255, 255, 0.5),
+    10px 0 0 rgba(255, 255, 255, 0.3);
 }
 
 .preview-sidebar__header {
@@ -25,7 +93,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 16px 20px 16px 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
 }
@@ -59,7 +127,7 @@
 .preview-sidebar__body {
   flex: 1;
   overflow: auto;
-  padding: 16px;
+  padding: 16px 16px 16px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,4 +156,9 @@
   border: none;
   border-radius: var(--radius-sm);
   background: #fff;
+}
+
+.preview-sidebar-resize-active {
+  cursor: ew-resize;
+  user-select: none;
 }
